@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import createStore from './store/createStore'
-import AppContainer from './components/containers/AppContainer';
+import createStore from './store/createStore';
+import AppContainer from './containers/AppContainer';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 // ========================================================
 // Store Instantiation
 // ========================================================
-// const initialState = window.___INITIAL_STATE__
-// const store = createStore(initialState)
+const initialState = window.___INITIAL_STATE__;
+const store = createStore(initialState);
 
 // ========================================================
 // Render Setup
@@ -15,15 +16,10 @@ import AppContainer from './components/containers/AppContainer';
 const MOUNT_NODE = document.getElementById('root');
 
 let render = () => {
-  // const routes = require('./routes/index').default(store)
-
-  // ReactDOM.render(
-  //   <AppContainer store={store} routes={routes} />,
-  //   MOUNT_NODE
-  // )
+  const routes = require('./routes/index').default(store);
 
   ReactDOM.render(
-    <AppContainer />,
+    <AppContainer store={store} routes={routes} />,
     MOUNT_NODE
   );
 };
@@ -70,4 +66,9 @@ if (__DEV__) {
 // ========================================================
 // Go!
 // ========================================================
+
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+injectTapEventPlugin();
+
 render();
