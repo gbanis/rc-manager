@@ -1,31 +1,19 @@
-import React, { Component, PropTypes } from 'react';
-import { browserHistory, Router } from 'react-router';
-import { Provider } from 'react-redux';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import React from 'react';
+import NavigationContainer from './NavigationContainer';
 
-class AppContainer extends Component {
+export default class AppContainer extends React.Component {
   static propTypes = {
-    routes : PropTypes.object.isRequired,
-    store  : PropTypes.object.isRequired
+    children  : React.PropTypes.object
   }
 
-  shouldComponentUpdate () {
-    return false;
-  }
+  static prop
 
   render () {
-    const { routes, store } = this.props;
-
     return (
-      <Provider store={store}>
-        <MuiThemeProvider>
-          <div style={{ height: '100%' }}>
-            <Router history={browserHistory} children={routes} />
-          </div>
-        </MuiThemeProvider>
-      </Provider>
+      <div>
+        <NavigationContainer />
+        {this.props.children}
+      </div>
     );
   }
 }
-
-export default AppContainer;

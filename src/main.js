@@ -1,14 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createStore from './store/createStore';
-import AppContainer from './containers/AppContainer';
+import store from './redux/config/store';
+import App from './App';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-
-// ========================================================
-// Store Instantiation
-// ========================================================
-const initialState = window.___INITIAL_STATE__;
-const store = createStore(initialState);
 
 // ========================================================
 // Render Setup
@@ -16,10 +10,8 @@ const store = createStore(initialState);
 const MOUNT_NODE = document.getElementById('root');
 
 let render = () => {
-  const routes = require('./routes/index').default(store);
-
   ReactDOM.render(
-    <AppContainer store={store} routes={routes} />,
+    <App store={store} />,
     MOUNT_NODE
   );
 };
@@ -54,7 +46,7 @@ if (__DEV__) {
     };
 
     // Setup hot module replacement
-    module.hot.accept('./routes/index', () =>
+    module.hot.accept('./App', () =>
       setImmediate(() => {
         ReactDOM.unmountComponentAtNode(MOUNT_NODE);
         render();
