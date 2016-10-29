@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
-import { homeReducer } from '../modules/home';
+import home from '../modules/home';
+import perfectWeather from '../modules/perfectWeather';
 
 export default combineReducers({
-  homeReducer,
+  home,
+  perfectWeather,
   routing: routerReducer
 });

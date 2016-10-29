@@ -37,6 +37,7 @@ class NavigationContainer extends React.Component {
     this.props.dispatch(push('/perfect-weather'));
   };
 
+  // TODO GB: Put it in a better place. Maybe router?
   routeTitles = {
     '/': 'RC Buddy',
     '/home': 'RC Buddy',

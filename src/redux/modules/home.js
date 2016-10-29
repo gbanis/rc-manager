@@ -28,7 +28,7 @@ const initialState = fromJS({
   counter: 0
 });
 
-export const homeReducer = (state = initialState, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case INCREMENT:
       const newValue = state.get('counter') + 1;
