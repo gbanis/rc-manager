@@ -13,20 +13,20 @@ export const perfectConditions = {
   }
 };
 
-export const simplify = (data) => {
+export const simplify = (rawApiData) => {
   const location = {
-    lon: data.city.coord.lon,
-    lat: data.city.coord.lat,
-    name: data.city.name,
-    country: data.city.country
+    lon: rawApiData.city.coord.lon,
+    lat: rawApiData.city.coord.lat,
+    name: rawApiData.city.name,
+    country: rawApiData.city.country
   };
 
-  const list = data.list.map((forecast) => {
+  const list = rawApiData.list.map((forecast) => {
     return {
       timestamp: forecast.dt,
       temp: forecast.main && forecast.main.temp,
-      wind: forecast.wind && forecast.wind.speed,
-      rain: forecast.rain && forecast.rain['3h']
+      wind: forecast.wind && forecast.wind.speed || 0,
+      rain: forecast.rain && forecast.rain['3h'] || 0
     };
   });
 
@@ -36,21 +36,46 @@ export const simplify = (data) => {
   };
 };
 
-export const processForecasts = (data) => {
-  return data.list.map((forecast) => {
-    const isPerfectRain = !forecast.rain['3h'] ||
-      (forecast.rain['3h'] > perfectConditions.rain.min &&
-        forecast.rain['3h'] < perfectConditions.rain.max);
-    const isPerfectTemp = forecast.main.temp > perfectConditions.temp.min &&
-      forecast.main.temp < perfectConditions.temp.max;
-    const isPerfectWind = forecast.wind.speed > perfectConditions.wind.min &&
-      forecast.wind.speed < perfectConditions.wind.max;
+export const toHourly = (simplifiedData) => {
+  let hourlyList = [];
+  const list = simplifiedData.list;
 
-    return {
-      timestamp: forecast.dt,
-      isPerfectWind,
-      isPerfectTemp,
-      isPerfectRain
-    };
+  for (let i = 0, len = list.length; i < len - 1; ++i) {
+    let second = {};
+    let third = {};
+
+    Object.keys(list[i]).map((key) => {
+      second[key] = (list[i + 1][key] - list[i][key]) / 3.0 + list[i][key];
+      third[key] = (list[i + 1][key] - list[i][key]) * 2 / 3.0 + list[i][key];
+    });
+
+    hourlyList.push(list[i]);
+    hourlyList.push(second);
+    hourlyList.push(third);
+  }
+
+  return Object.assign({}, simplifiedData, { list: hourlyList });
+};
+
+export const calculatePerfectData = (forecast) => {
+  const isPerfectRain = !forecast.rain ||
+    (forecast.rain > perfectConditions.rain.min &&
+      forecast.rain < perfectConditions.rain.max);
+  const isPerfectTemp = forecast.temp > perfectConditions.temp.min &&
+    forecast.temp < perfectConditions.temp.max;
+  const isPerfectWind = forecast.wind > perfectConditions.wind.min &&
+    forecast.wind < perfectConditions.wind.max;
+
+  return {
+    isPerfect: isPerfectWind && isPerfectRain && isPerfectTemp,
+    isPerfectWind,
+    isPerfectTemp,
+    isPerfectRain
+  };
+};
+
+export const enrichWithPerfectData = (hourlyData) => {
+  return hourlyData.list.map((forecast) => {
+    return Object.assign({}, forecast, calculatePerfectData(forecast));
   });
 };
