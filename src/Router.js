@@ -1,12 +1,12 @@
 import React from 'react';
-import { Router, Route, Redirect, browserHistory } from 'react-router';
+import { Router, Route, Redirect, hashHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import AppContainer from './containers/AppContainer';
 import HomeContainer from './containers/HomeContainer';
 import PerfectWeatherContainer from './containers/PerfectWeatherContainer';
 
 const CustomRouter = (props) => {
-  const history = syncHistoryWithStore(browserHistory, props.store);
+  const history = syncHistoryWithStore(hashHistory, props.store);
 
   return (
     <Router history={history}>
