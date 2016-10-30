@@ -34,14 +34,14 @@ class NavigationContainer extends React.Component {
 
   onPerfectWeatherClick = () => {
     this.closeMenu();
-    this.props.dispatch(push('/perfect-weather'));
+    this.props.dispatch(push('/weather'));
   };
 
   // TODO GB: Put it in a better place. Maybe router?
   routeTitles = {
     '/': 'RC Buddy',
     '/home': 'RC Buddy',
-    '/perfect-weather': 'PerfectWeather'
+    '/weather': 'PerfectWeather'
   };
 
   pickTitle = () => {
