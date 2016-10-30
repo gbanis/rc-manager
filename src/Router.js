@@ -13,7 +13,7 @@ const CustomRouter = (props) => {
       <Redirect from="/" to="/home" />
       <Route path="/" component={AppContainer}>
         <Route path="home" component={HomeContainer} />
-        <Route path="perfect-weather" component={PerfectWeatherContainer} />
+        <Route path="weather" component={PerfectWeatherContainer} />
       </Route>
     </Router>
   );
