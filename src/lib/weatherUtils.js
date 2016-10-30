@@ -75,7 +75,11 @@ export const calculatePerfectData = (forecast) => {
 };
 
 export const enrichWithPerfectData = (hourlyData) => {
-  return hourlyData.list.map((forecast) => {
-    return Object.assign({}, forecast, calculatePerfectData(forecast));
+  return Object.assign({}, hourlyData, {
+    list: hourlyData.list.map((forecast) => {
+      return Object.assign({}, forecast, calculatePerfectData(forecast));
+    })
   });
 };
+
+export const compute = (rawApiData) => enrichWithPerfectData(toHourly(simplify(rawApiData)));

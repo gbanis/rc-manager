@@ -2,13 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
+import Chip from 'material-ui/Chip';
+import { blue300 } from 'material-ui/styles/colors';
 
 import { requestForecasts } from '../redux/modules/perfectWeather';
 
 class PerfectWeatherContainer extends React.Component {
   static propTypes = {
     requestForecasts: React.PropTypes.func.isRequired,
-    processedForecasts: React.PropTypes.object.isRequired
+    forecasts: React.PropTypes.object.isRequired
   };
 
   componentWillMount () {
@@ -16,12 +18,38 @@ class PerfectWeatherContainer extends React.Component {
   }
 
   render () {
-    this.props.processedForecasts.map((processedForecast) => {
-      console.log(moment.unix(processedForecast.get('timestamp')).format('ddd, hA'), processedForecast.get('isPerfectWind'));
+    const list = this.props.forecasts.get('list');
+
+    if (!list) return <div />;
+
+    const forecastsByDay = list.groupBy((item) => {
+      return moment.unix(item.get('timestamp')).format('Y-M-D');
     });
+
+    const nodes = forecastsByDay.map((dailyForecasts, day) => {
+      const dayNodes = dailyForecasts.map((item) => {
+        return (
+          <Chip
+            style={{display: 'inline-block'}}
+            backgroundColor={item.get('isPerfect') ? blue300 : ''}
+            key={item.get('timestamp')}
+          >
+            {moment.unix(item.get('timestamp')).format('hA')}
+          </Chip>
+        );
+      });
+
+      return (
+        <div>
+          <h1>{day}</h1>
+          {dayNodes}
+        </div>
+      );
+    });
+
     return (
       <div>
-        hi
+        {nodes}
       </div>
     );
   }
@@ -29,7 +57,7 @@ class PerfectWeatherContainer extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    processedForecasts: state.perfectWeather.get('processedForecasts')
+    forecasts: state.perfectWeather.get('forecasts')
   };
 };
 

@@ -5,7 +5,7 @@ import AppContainer from './containers/AppContainer';
 import HomeContainer from './containers/HomeContainer';
 import PerfectWeatherContainer from './containers/PerfectWeatherContainer';
 
-export default (props) => {
+const CustomRouter = (props) => {
   const history = syncHistoryWithStore(browserHistory, props.store);
 
   return (
@@ -19,3 +19,8 @@ export default (props) => {
   );
 };
 
+CustomRouter.propTypes = {
+  store: React.PropTypes.object
+};
+
+export default CustomRouter;
