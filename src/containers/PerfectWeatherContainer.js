@@ -6,6 +6,7 @@ import Chip from 'material-ui/Chip';
 import { blue300 } from 'material-ui/styles/colors';
 
 import { requestForecasts } from '../redux/modules/perfectWeather';
+import { isPreferred } from '../lib/timeUtils';
 
 class PerfectWeatherContainer extends React.Component {
   static propTypes = {
@@ -27,8 +28,12 @@ class PerfectWeatherContainer extends React.Component {
     });
 
     const nodes = forecastsByDay.map((dailyForecasts, day) => {
-      const dayNodes = dailyForecasts.map((item) => {
-        return (
+      const dayNodes = dailyForecasts.reduce((nodeArray, item) => {
+        if (!isPreferred(item.get('timestamp'))) {
+          return nodeArray;
+        };
+
+        return nodeArray.concat([
           <Chip
             style={{display: 'inline-block'}}
             backgroundColor={item.get('isPerfect') ? blue300 : ''}
@@ -36,12 +41,23 @@ class PerfectWeatherContainer extends React.Component {
           >
             {moment.unix(item.get('timestamp')).format('hA')}
           </Chip>
-        );
-      });
+        ]);
+      }, []);
+      // const dayNodes = dailyForecasts.map((item) => {
+      //   return (
+      //     <Chip
+      //       style={{display: 'inline-block'}}
+      //       backgroundColor={item.get('isPerfect') ? blue300 : ''}
+      //       key={item.get('timestamp')}
+      //     >
+      //       {moment.unix(item.get('timestamp')).format('hA')}
+      //     </Chip>
+      //   );
+      // });
 
       return (
         <div>
-          <h1>{moment(day, "YYYY-MM-DD").format('dddd M/D')}</h1>
+          <h1>{moment(day, 'YYYY-MM-DD').format('dddd M/D')}</h1>
           {dayNodes}
         </div>
       );
