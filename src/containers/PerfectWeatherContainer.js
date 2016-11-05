@@ -41,7 +41,7 @@ class PerfectWeatherContainer extends React.Component {
 
       return (
         <div>
-          <h1>{day}</h1>
+          <h1>{moment(day, "YYYY-MM-DD").format('dddd M/D')}</h1>
           {dayNodes}
         </div>
       );
