@@ -1,15 +1,15 @@
 export const perfectConditions = {
   wind: {
-    min: 0,
-    max: 5
+    min: 0.0,
+    max: 5.1
   },
   temp: {
-    min: 40,
-    max: 90
+    min: 34.0,
+    max: 90.0
   },
   rain: {
-    min: 0,
-    max: 0.5
+    min: 0.0,
+    max: 0.2
   }
 };
 
