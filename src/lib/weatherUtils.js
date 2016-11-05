@@ -59,12 +59,12 @@ export const toHourly = (simplifiedData) => {
 
 export const calculatePerfectData = (forecast) => {
   const isPerfectRain = !forecast.rain ||
-    (forecast.rain > perfectConditions.rain.min &&
-      forecast.rain < perfectConditions.rain.max);
-  const isPerfectTemp = forecast.temp > perfectConditions.temp.min &&
-    forecast.temp < perfectConditions.temp.max;
-  const isPerfectWind = forecast.wind > perfectConditions.wind.min &&
-    forecast.wind < perfectConditions.wind.max;
+    (forecast.rain >= perfectConditions.rain.min &&
+      forecast.rain <= perfectConditions.rain.max);
+  const isPerfectTemp = forecast.temp >= perfectConditions.temp.min &&
+    forecast.temp <= perfectConditions.temp.max;
+  const isPerfectWind = forecast.wind >= perfectConditions.wind.min &&
+    forecast.wind <= perfectConditions.wind.max;
 
   return {
     isPerfect: isPerfectWind && isPerfectRain && isPerfectTemp,
