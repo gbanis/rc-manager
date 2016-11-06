@@ -43,17 +43,6 @@ class PerfectWeatherContainer extends React.Component {
           </Chip>
         ]);
       }, []);
-      // const dayNodes = dailyForecasts.map((item) => {
-      //   return (
-      //     <Chip
-      //       style={{display: 'inline-block'}}
-      //       backgroundColor={item.get('isPerfect') ? blue300 : ''}
-      //       key={item.get('timestamp')}
-      //     >
-      //       {moment.unix(item.get('timestamp')).format('hA')}
-      //     </Chip>
-      //   );
-      // });
 
       return (
         <div>
