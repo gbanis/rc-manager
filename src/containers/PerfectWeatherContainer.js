@@ -3,11 +3,20 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import Chip from 'material-ui/Chip';
+import FontIcon from 'material-ui/FontIcon';
+import FontAwesome from 'react-fontawesome';
 import { blue300 } from 'material-ui/styles/colors';
 
 import { requestForecasts } from '../redux/modules/perfectWeather';
 import { isPreferred } from '../lib/timeUtils';
 
+const styles = {
+  icons: {
+    fontSize: 14,
+    opacity: 0.5,
+    paddingLeft: 3
+  }
+};
 class PerfectWeatherContainer extends React.Component {
   static propTypes = {
     requestForecasts: React.PropTypes.func.isRequired,
@@ -16,6 +25,21 @@ class PerfectWeatherContainer extends React.Component {
 
   componentWillMount () {
     this.props.requestForecasts();
+  }
+
+  renderWindIcon (item) {
+    if (item.get('isPerfectWind')) return;
+    return <FontAwesome name="location-arrow" style={styles.icons} />;
+  }
+
+  renderRainIcon (item) {
+    if (item.get('isPerfectRain')) return;
+    return <FontAwesome name="tint" style={styles.icons} />;
+  }
+
+  renderTempIcon (item) {
+    if (item.get('isPerfectTemp')) return;
+    return <FontAwesome name="thermometer-half" style={styles.icons} />;
   }
 
   render () {
@@ -40,6 +64,9 @@ class PerfectWeatherContainer extends React.Component {
             key={item.get('timestamp')}
           >
             {moment.unix(item.get('timestamp')).format('hA')}
+            {this.renderWindIcon(item)}
+            {this.renderRainIcon(item)}
+            {this.renderTempIcon(item)}
           </Chip>
         ]);
       }, []);
