@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import Chip from 'material-ui/Chip';
-import FontIcon from 'material-ui/FontIcon';
 import FontAwesome from 'react-fontawesome';
 import { blue300 } from 'material-ui/styles/colors';
 
